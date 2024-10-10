@@ -16,7 +16,7 @@ class Series {
         $this->puntuacion = $puntuacion;
 
     }
-
+// comentario
     public function getTitulo() {return $this->titulo;}
 
 	public function getISAN() {return $this->ISAN;}
