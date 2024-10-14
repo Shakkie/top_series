@@ -1,8 +1,8 @@
 <?php 
 
-class Series {
-    private $titulo;
-    private $ISAN; // 8 digitos
+class Serie {
+    private $titulo; // puede repetirse
+    private $ISAN; // 8 digitos -> no se puede repetir
     private $descripcion;
     private $anio_estreno;
     private $puntuacion; // 1 al 5; estrellas como la profe
@@ -10,13 +10,16 @@ class Series {
     public function __construct($titulo, $ISAN,$descripcion,$anio_estreno,$puntuacion)
     {
         $this->titulo = $titulo;
-        $this->ISAN = $ISAN;
+        $this->ISAN = $ISAN; 
         $this->descripcion = $descripcion;
         $this->anio_estreno = $anio_estreno;
         $this->puntuacion = $puntuacion;
 
     }
-// comentario
+// comentario hacer funciones separadas del grud, se llama a la funcion y hace la insercion de datos
+// la conexion es una clase estatica 
+
+    //Getter and Setters
     public function getTitulo() {return $this->titulo;}
 
 	public function getISAN() {return $this->ISAN;}
@@ -37,6 +40,11 @@ class Series {
 
 	public function setPuntuacion( $puntuacion): void {$this->puntuacion = $puntuacion;}
 
+    // Funciones grud de series
+
+    
+
+    
 	
 
 }
