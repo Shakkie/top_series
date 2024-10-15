@@ -9,6 +9,6 @@ session_start();
     <title></title>
 </head>
 <body>
-    <footer> c top series todos los derechos reservados</footer>
+    <footer> &copy; top series todos los derechos reservados</footer>
 </body>
 </html>

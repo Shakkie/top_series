@@ -71,6 +71,17 @@ class Usuario
         }
         return $usuarios;
     }
+    // un usuario devuelve su informacion
+    public static function getUsuarioBD($email){
+        $con = ConexionBD::getConnection();
+        $sqlQuery = "select nombre, nombre_usuario, email, rol from usuario where Email = ?";
+        $result = $con->prepare($sqlQuery);
+        $result->bindValue(1, $email);
+        $result->execute();
+        $usuario = $result->fetch(PDO::FETCH_ASSOC);
+        return $usuario;
+
+    }
 
     public function addUser()
     {
@@ -87,7 +98,7 @@ class Usuario
     public function getPuntuations()
     {
         $con = ConexionBD::getConnection();
-        $sqlQuery = "select titulo, puntuacion from puntuacion p natural join serie s inner join usuario u on p.ID = u.ID where u.Email = ?";
+        $sqlQuery = "select titulo, puntuacion, descripcion, anio_estreno from puntuacion p natural join serie s inner join usuario u on p.ID = u.ID where u.Email = ?";
         $result = $con->prepare($sqlQuery);
         $result->bindValue(1, $this->getEmail());
         $result->execute();
@@ -97,4 +108,6 @@ class Usuario
         }
         return $puntuaciones;
     }
+
+    
 }
