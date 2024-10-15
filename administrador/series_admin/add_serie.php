@@ -1,0 +1,2 @@
+<?php 
+/*Añadir nueva serie */

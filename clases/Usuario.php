@@ -1,12 +1,15 @@
 <?php 
 class Usuario{
+    private $id;
     private $nombre;
     private $email;
     private $password;
     private $rol; // puede ser administrador o usuario comun
+    
 
 
-    public function __construct($nombre,$email,$password,$rol){
+    public function __construct($id,$nombre,$email,$password,$rol){
+        $this->id=$id;
         $this->nombre=$nombre;
         $this->email=$email;
         $this->password=$password;
@@ -14,6 +17,8 @@ class Usuario{
     }
 
     // getter y setters
+    public function getId() {return $this->id;}
+
     public function getNombre() {return $this->nombre;}
 
 	public function getEmail() {return $this->email;}
@@ -21,6 +26,8 @@ class Usuario{
 	public function getPassword() {return $this->password;}
 
 	public function getRol() {return $this->rol;}
+
+    public function setId($id): void {$this->id=$id;}
 
 	public function setNombre( $nombre): void {$this->nombre = $nombre;}
 
