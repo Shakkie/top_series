@@ -74,15 +74,25 @@ class Serie
         return $series;
     }
 
-    public function addSerie($serie)
+    public function addSerie()
     {
         $con = ConexionBD::getConnection();
         $sqlInsert = "insert into serie values ( ?, ?, ?, ?)";
         $insert = $con->prepare($sqlInsert);
-        $insert->bindValue(1, $serie->getISAN());
-        $insert->bindValue(2, $serie->getNombre());
-        $insert->bindValue(3, $serie->getDescripcion());
-        $insert->bindValue(4, $serie->getAnioEstreno());
+        $insert->bindValue(1, $this->getISAN());
+        $insert->bindValue(2, $this->getTitulo());
+        $insert->bindValue(3, $this->getDescripcion());
+        $insert->bindValue(4, $this->getAnioEstreno());
         $insert->execute();
+    }
+
+    public function meanPuntuation()
+    {
+        $con = ConexionBD::getConnection();
+        $sqlQuery = "select avg(Puntuacion) from puntuacion where ISAN = ?";
+        $result = $con->prepare($sqlQuery);
+        $result->bindValue(1, $this->getISAN());
+        $row = $result->fetch(PDO::FETCH_NUM);
+        return $row[0];
     }
 }

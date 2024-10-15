@@ -72,15 +72,29 @@ class Usuario
         return $usuarios;
     }
 
-    public function addUser($usuario)
+    public function addUser()
     {
         $con = ConexionBD::getConnection();
         $sqlInsert = "insert into usuario (nombre, email, password, rol) values ( ?, ?, ?, ?)";
         $insert = $con->prepare($sqlInsert);
-        $insert->bindValue(1, $usuario->getNombre());
-        $insert->bindValue(2, $usuario->getEmailç());
-        $insert->bindValue(3, $usuario->getPassword());
-        $insert->bindValue(4, $usuario->getRol());
+        $insert->bindValue(1, $this->getNombre());
+        $insert->bindValue(2, $this->getEmail());
+        $insert->bindValue(3, $this->getPassword());
+        $insert->bindValue(4, $this->getRol());
         $insert->execute();
+    }
+
+    public function getPuntuations()
+    {
+        $con = ConexionBD::getConnection();
+        $sqlQuery = "select titulo, puntuacion from puntuacion p natural join serie s inner join usuario u on p.ID = u.ID where u.Email = ?";
+        $result = $con->prepare($sqlQuery);
+        $result->bindValue(1, $this->getEmail());
+        $result->execute();
+        $puntuaciones = [];
+        while ($row = $result->fetch(PDO::FETCH_NUM)) {
+            $puntuaciones[$row[0]] = $row[1];
+        }
+        return $puntuaciones;
     }
 }
