@@ -1,42 +1,100 @@
 <?php 
-class Usuario{
-    private $id;
+class Usuario
+{
     private $nombre;
     private $email;
     private $password;
     private $rol; // puede ser administrador o usuario comun
-    
 
 
-    public function __construct($id,$nombre,$email,$password,$rol){
-        $this->id=$id;
-        $this->nombre=$nombre;
-        $this->email=$email;
-        $this->password=$password;
-        $this->rol=$rol;
+    public function __construct($nombre, $email, $password, $rol)
+    {
+        $this->nombre = $nombre;
+        $this->email = $email;
+        $this->password = $password;
+        $this->rol = $rol;
     }
 
     // getter y setters
-    public function getId() {return $this->id;}
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
 
-    public function getNombre() {return $this->nombre;}
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
-	public function getEmail() {return $this->email;}
+    public function getPassword()
+    {
+        return $this->password;
+    }
 
-	public function getPassword() {return $this->password;}
+    public function getRol()
+    {
+        return $this->rol;
+    }
 
-	public function getRol() {return $this->rol;}
+    public function setNombre($nombre): void
+    {
+        $this->nombre = $nombre;
+    }
 
-    public function setId($id): void {$this->id=$id;}
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
 
-	public function setNombre( $nombre): void {$this->nombre = $nombre;}
+    public function setPassword($password): void
+    {
+        $this->password = $password;
+    }
 
-	public function setEmail( $email): void {$this->email = $email;}
+    public function setRol($rol): void
+    {
+        $this->rol = $rol;
+    }
 
-	public function setPassword( $password): void {$this->password = $password;}
+    // Funciones CRUD
+    public function getUsuariosBD()
+    {
+        $con = ConexionBD::getConnection();
+        $sqlQuery = "select * from usuario";
+        $result = $con->prepare($sqlQuery);
+        $result->execute();
+        $usuarios = [];
+        $contador = 0;
+        while ($row = $result->fetch(PDO::FETCH_NUM)) {
+            $usuarios[$contador] = new Usuario($row[1], $row[2], $row[3], $row[4]);
+            $contador++;
+        }
+        return $usuarios;
+    }
 
-	public function setRol( $rol): void {$this->rol = $rol;}
+    public function addUser()
+    {
+        $con = ConexionBD::getConnection();
+        $sqlInsert = "insert into usuario (nombre, email, password, rol) values ( ?, ?, ?, ?)";
+        $insert = $con->prepare($sqlInsert);
+        $insert->bindValue(1, $this->getNombre());
+        $insert->bindValue(2, $this->getEmail());
+        $insert->bindValue(3, $this->getPassword());
+        $insert->bindValue(4, $this->getRol());
+        $insert->execute();
+    }
 
-	
-    
+    public function getPuntuations()
+    {
+        $con = ConexionBD::getConnection();
+        $sqlQuery = "select titulo, puntuacion from puntuacion p natural join serie s inner join usuario u on p.ID = u.ID where u.Email = ?";
+        $result = $con->prepare($sqlQuery);
+        $result->bindValue(1, $this->getEmail());
+        $result->execute();
+        $puntuaciones = [];
+        while ($row = $result->fetch(PDO::FETCH_NUM)) {
+            $puntuaciones[$row[0]] = $row[1];
+        }
+        return $puntuaciones;
+    }
 }
