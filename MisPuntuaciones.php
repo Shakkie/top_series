@@ -1,17 +1,51 @@
 <?php 
+session_start();
+include_once 'clases/ConexionBD.php'; 
+include_once 'clases/Usuario.php';
+
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php");
+    exit();
+}
+$email = $_SESSION['email'];
+$usuario = Usuario::getUsuarioBD($email);
+
+if (!$usuario) {
+    echo "Error: Usuario no encontrado.";
+    exit();
+}
+$user = new Usuario("","",$email,"");//($email);// aqui preguntar por el constructor, vacio o pasarle las cosas vacias o hacer otro solo con email
+$puntuaciones = $user->getPuntuations(); 
 // tiene las puntuaicones, administrador u usuario normal
 /* Es una lista con las series, una leve descripcion y el ultimo cuadro son las estrellas que se le va dando, al hacer click 
 se puede ir cambiando la puntuacion, sobre la estrella */
-
+include_once 'includes/header.php'; 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-</head>
-<body>
-    
-</body>
-</html>
+<div class="mis_puntuaciones">
+    <h2>Mis Puntuaciones</h2>
+    <?php if (!empty($puntuaciones)): ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>Título de la Serie</th>
+                    <th>Puntuación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($puntuaciones as $titulo => $puntuacion): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($titulo);?></td>
+                        <td><?php echo htmlspecialchars($puntuacion); ?></td>
+                        <td><?php echo htmlspecialchars($descripcion); ?></td>
+                        <td><?php echo htmlspecialchars($anio_estreno); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>No has puntuado ninguna serie aún</p>
+    <?php endif; ?>
+</div>
+<?php
+include_once 'includes/footer.php'; 
+?>
