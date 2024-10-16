@@ -1,15 +1,17 @@
-<?php 
+<?php
 class Usuario
 {
     private $nombre;
+    private $username;
     private $email;
     private $password;
     private $rol; // puede ser administrador o usuario comun
 
 
-    public function __construct($nombre, $email, $password, $rol)
+    public function __construct($nombre, $username, $email, $password, $rol)
     {
         $this->nombre = $nombre;
+        $this->username = $username;
         $this->email = $email;
         $this->password = $password;
         $this->rol = $rol;
@@ -19,6 +21,11 @@ class Usuario
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    public function getUserName()
+    {
+        return $this->username;
     }
 
     public function getEmail()
@@ -39,6 +46,11 @@ class Usuario
     public function setNombre($nombre): void
     {
         $this->nombre = $nombre;
+    }
+
+    public function setUserName($username): void
+    {
+        $this->username = $username;
     }
 
     public function setEmail($email): void
@@ -66,21 +78,22 @@ class Usuario
         $usuarios = [];
         $contador = 0;
         while ($row = $result->fetch(PDO::FETCH_NUM)) {
-            $usuarios[$contador] = new Usuario($row[1], $row[2], $row[3], $row[4]);
+            $usuarios[$contador] = new Usuario($row[1], $row[2], $row[3], $row[4], $row[5]);
             $contador++;
         }
         return $usuarios;
     }
     // un usuario devuelve su informacion
-    public static function getUsuarioBD($email){
+    public static function getUsuarioBD($email)
+    {
         $con = ConexionBD::getConnection();
-        $sqlQuery = "select nombre, nombre_usuario, email, rol from usuario where Email = ?";
+        $sqlQuery = "select * from usuario where Email = ?";
         $result = $con->prepare($sqlQuery);
         $result->bindValue(1, $email);
         $result->execute();
-        $usuario = $result->fetch(PDO::FETCH_ASSOC);
+        $row = $result->fetch(PDO::FETCH_NUM);
+        $usuario = new Usuario($row[1], $row[2], $row[3], $row[4], $row[5]);
         return $usuario;
-
     }
 
     public function addUser()
@@ -108,6 +121,4 @@ class Usuario
         }
         return $puntuaciones;
     }
-
-    
 }
