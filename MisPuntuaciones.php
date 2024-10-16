@@ -19,6 +19,7 @@ $puntuaciones = $usuario->getPuntuations();
 
 /* Es una lista con las series, una leve descripcion y el ultimo cuadro son las estrellas que se le va dando, al hacer click 
 se puede ir cambiando la puntuacion, sobre la estrella */
+$pageTitle = 'Mis puntuaciones';
 include_once 'includes/header.php'; 
 ?>
 <div class="mis_puntuaciones">
@@ -29,8 +30,7 @@ include_once 'includes/header.php';
                 <tr>
                     <th>Título de la Serie</th>
                     <th>Puntuación</th>
-                    <th>Descripción</th>
-                    <th>Año Estreno</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -38,8 +38,6 @@ include_once 'includes/header.php';
                     <tr>
                         <td><?php echo htmlspecialchars($titulo);?></td>
                         <td><?php echo htmlspecialchars($puntuacion); ?></td>
-                        <td><?php echo htmlspecialchars($descripcion); ?></td>
-                        <td><?php echo htmlspecialchars($anio_estreno); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

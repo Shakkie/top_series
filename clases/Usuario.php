@@ -97,6 +97,21 @@ class Usuario
         return $usuario;
     }
 
+    public static function getVerificarUsuario($email,$password){
+        $con = ConexionBD::getConnection();
+        $sqlQuery = "select * from usuario where Email = :email";
+        $result =$con->prepare($sqlQuery);
+        $result->bindValue(':email',$email);
+        $result->execute();
+        $usuario= $result->fetch(PDO::FETCH_ASSOC);
+        if ($usuario && $usuario['Password'] === $password) {
+            return $usuario; 
+        } else {
+            return false;
+        }
+        
+    }
+
     public function addUser()
     {
         $con = ConexionBD::getConnection();
@@ -112,7 +127,7 @@ class Usuario
     public function getPuntuations()
     {
         $con = ConexionBD::getConnection();
-        $sqlQuery = "select titulo, puntuacion, descripcion, anio_estreno from puntuacion p natural join serie s inner join usuario u on p.ID = u.ID where u.Email = ?";
+        $sqlQuery = "select titulo, puntuacion from puntuacion p natural join serie s inner join usuario u on p.ID = u.ID where u.Email = ?";
         $result = $con->prepare($sqlQuery);
         $result->bindValue(1, $this->getEmail());
         $result->execute();

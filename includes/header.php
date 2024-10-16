@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -14,16 +14,17 @@ session_start();
     <header>
         <nav>
             <ul>
-                <li><a href="../ListTopSeries.php">Todas las series</a></li>
-                <li><a href="../MisPuntuaciones.php">Mis puntuaciones</a></li>
+                <li><a href="ListTopSeries.php">Todas las series</a></li>
+                <li><a href="MisPuntuaciones.php">Mis puntuaciones</a></li>
                 
                 <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'administrador'): ?>
                     <li><a href="../administrador/series_admin/gestion_series.php">Gestionar series</a></li>
                     <li><a href="../administrador/gestion_user.php">Gestionar usuarios</a></li>
                 <?php endif; ?>
                 
-                <li><a href="../Perfilgeneral.php">Mi perfil</a></li>
-                <li><a href="logout.php">Salir</a></li>
+                <li><a href="PerfilGeneral.php">Mi perfil</a></li>
+                <li><a href="includes/logout.php">Salir</a></li>
             </ul>
         </nav>
     </header>
+

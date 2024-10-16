@@ -7,8 +7,12 @@ if (!isset($_SESSION['email'])) {
      exit();
  }
 /*Muestra la lista de todas las series, con sus puntuaciones en media por estrellas.
-
      */
+    $email = $_SESSION['email'];
+$usuario = Usuario::getUsuarioBD($email);
+$puntuaciones = $usuario->getPuntuations();
+
+$pageTitle = 'Top series';
  include_once 'includes/header.php'; 
 ?>
 <div class="top_series">
@@ -18,27 +22,26 @@ if (!isset($_SESSION['email'])) {
         <thead>
             <tr>
                 <th>Título</th>
-                <th>Descripción</th>
-                <th>Año de Estreno</th>
                 <th>Puntuación</th>
             </tr>
         </thead>
         <tbody>
             <?php if (!empty($puntuaciones)): ?>
-                <?php foreach ($puntuaciones as $titulo => $puntuacion): ?>
+                <?php foreach ($puntuaciones as $puntuacion): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($titulo); ?></td>
-                        <td><?php echo htmlspecialchars($descripcion); ?></td>
-                        <td><?php echo htmlspecialchars($anio_estreno); ?></td>
-                        <td><?php echo htmlspecialchars($puntuacion); ?></td>
+                        <td><?php echo htmlspecialchars($puntuacion['titulo']); ?></td>
+                        <td><?php echo htmlspecialchars($puntuacion['puntuacion']); ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="4">No hay series puntuadas disponibles.</td>
+                    <td colspan="2">No hay series puntuadas disponibles.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
     </table>
 </div>
+<?php 
+include_once 'includes/footer.php';
+?>
 

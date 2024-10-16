@@ -9,20 +9,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = trim($_POST['password']);
 
     if (!empty($email) && !empty($password)) {
-        $usuario = new Usuario();
-        if ($usuario->login($email, $password)) {
-            $_SESSION['email'] = $email;
-            $_SESSION['rol'] = $usuario->getRol(); 
-            header("Location: ../PerfilGeneralUsuario.php"); 
+        // Verifica usuario
+        $usuario = Usuario::getVerificarUsuario($email, $password);
+        
+        if ($usuario) {
+            var_dump($usuario);
+            $_SESSION['email'] = $usuario['Email']; 
+            $_SESSION['rol'] = $usuario['Rol'];
+            
+            
+            header("Location: Perfilgeneral.php");
             exit();
         } else {
-            $error = "Email o contraseña incorrectos";
+            $error = "Email o contraseña incorrectos.";
         }
     } else {
-        $error = "Introduce email o contraseña";
+        $error = "Introduce email o contraseña.";
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -36,9 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1>Bienvenido al Top Series</h1>
         <form method="POST" action="">
             <label for="email">Email: </label><br>
-            <input type="email" name="email" id="email" required><br>
+            <input type="email" name="email" id="email" ><br>
             <label for="password">Contraseña: </label><br>
-            <input type="password" name="password" id="password" required><br>
+            <input type="password" name="password" id="password" ><br>
             <input type="submit" value="Iniciar sesión">
             <input type="reset" value="Restablecer">
         </form>
