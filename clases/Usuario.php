@@ -1,4 +1,4 @@
-<?php 
+<?php
 class Usuario
 {
     private $nombre;
@@ -8,7 +8,7 @@ class Usuario
     private $rol; // puede ser administrador o usuario comun
 
 
-    public function __construct($nombre,$username, $email, $password, $rol)
+    public function __construct($nombre, $username, $email, $password, $rol)
     {
         $this->nombre = $nombre;
         $this->username = $username;
@@ -22,7 +22,9 @@ class Usuario
     {
         return $this->nombre;
     }
-    public function getUsername(){
+
+    public function getUserName()
+    {
         return $this->username;
     }
 
@@ -45,7 +47,9 @@ class Usuario
     {
         $this->nombre = $nombre;
     }
-    public function setUsername($username): void{
+
+    public function setUserName($username): void
+    {
         $this->username = $username;
     }
 
@@ -75,21 +79,22 @@ class Usuario
         $usuarios = [];
         $contador = 0;
         while ($row = $result->fetch(PDO::FETCH_NUM)) {
-            $usuarios[$contador] = new Usuario($row[1], $row[2], $row[3], $row[4],$row[5]);
+            $usuarios[$contador] = new Usuario($row[1], $row[2], $row[3], $row[4], $row[5]);
             $contador++;
         }
         return $usuarios;
     }
     // un usuario devuelve su informacion
-    public static function getUsuarioBD($email){
+    public static function getUsuarioBD($email)
+    {
         $con = ConexionBD::getConnection();
-        $sqlQuery = "select nombre, nombre_usuario, email, rol from usuario where Email = ?";
+        $sqlQuery = "select * from usuario where Email = ?";
         $result = $con->prepare($sqlQuery);
         $result->bindValue(1, $email);
         $result->execute();
-        $usuario = $result->fetch(PDO::FETCH_ASSOC);
+        $row = $result->fetch(PDO::FETCH_NUM);
+        $usuario = new Usuario($row[1], $row[2], $row[3], $row[4], $row[5]);
         return $usuario;
-
     }
 
     public function addUser()
@@ -117,6 +122,4 @@ class Usuario
         }
         return $puntuaciones;
     }
-
-    
 }
