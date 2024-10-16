@@ -1,17 +1,25 @@
 <?php
+session_start();
+include_once 'clases/ConexionBD.php'; 
+include_once 'clases/Usuario.php'; 
 
-
-session_start(); 
-
-// aqui hacer la comprobacion de si es usuario normal u administrador pasar la info al a bbdd y verificar
+$error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['nombre']) && !empty(trim($_POST['nombre']))) {
-        $_SESSION['nombre_usuario'] = trim($_POST['nombre']);
-        echo "Nombre guardado: " . htmlspecialchars($_SESSION['nombre_usuario']); 
-        header("Location: ../Login.php"); 
-        exit();
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+
+    if (!empty($email) && !empty($password)) {
+        $usuario = new Usuario();
+        if ($usuario->login($email, $password)) {
+            $_SESSION['email'] = $email;
+            $_SESSION['rol'] = $usuario->getRol(); 
+            header("Location: ../PerfilGeneralUsuario.php"); 
+            exit();
+        } else {
+            $error = "Email o contraseña incorrectos";
+        }
     } else {
-        $error = "Introduce un nombre por favor o contraseña";
+        $error = "Introduce email o contraseña";
     }
 }
 ?>
@@ -21,21 +29,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <title>Top Series</title>
+    <title>Top Series - Login</title>
 </head>
 <body>
     <div class="contenedor">
-    <h1>Bienvenido al Top Series</h1>
-    <form method="POST" action="">
-        <label for="nombre">Nombre Usuario: </label><br>
-        <input type="text" name="nombre" id="nombre"><br>
-        <label for="password">Contraseña: </label><br>
-        <input type="text" name="password" id="password"><br>
-        <input type="submit" value="Enviar">
-        <input type="reset" value="Restablecer">
-    </form>
-    <?php //  $error = "Introduce un nombre por favor";
-    if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+        <h1>Bienvenido al Top Series</h1>
+        <form method="POST" action="">
+            <label for="email">Email: </label><br>
+            <input type="email" name="email" id="email" required><br>
+            <label for="password">Contraseña: </label><br>
+            <input type="password" name="password" id="password" required><br>
+            <input type="submit" value="Iniciar sesión">
+            <input type="reset" value="Restablecer">
+        </form>
+        <?php if (!empty($error)): ?>
+            <p style='color:red;'><?php echo htmlspecialchars($error); ?></p>
+        <?php endif; ?>
     </div>
 </body>
 </html>
+

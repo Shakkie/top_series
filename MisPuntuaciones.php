@@ -11,12 +11,12 @@ $email = $_SESSION['email'];
 $usuario = Usuario::getUsuarioBD($email);
 
 if (!$usuario) {
-    echo "Error: Usuario no encontrado.";
+    echo "Error: Usuario no encontrado";
     exit();
 }
-$user = new Usuario("","",$email,"");//($email);// aqui preguntar por el constructor, vacio o pasarle las cosas vacias o hacer otro solo con email
-$puntuaciones = $user->getPuntuations(); 
-// tiene las puntuaicones, administrador u usuario normal
+
+$puntuaciones = $usuario->getPuntuations(); 
+
 /* Es una lista con las series, una leve descripcion y el ultimo cuadro son las estrellas que se le va dando, al hacer click 
 se puede ir cambiando la puntuacion, sobre la estrella */
 include_once 'includes/header.php'; 
@@ -29,6 +29,8 @@ include_once 'includes/header.php';
                 <tr>
                     <th>Título de la Serie</th>
                     <th>Puntuación</th>
+                    <th>Descripción</th>
+                    <th>Año Estreno</th>
                 </tr>
             </thead>
             <tbody>

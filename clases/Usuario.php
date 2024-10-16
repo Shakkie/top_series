@@ -2,14 +2,16 @@
 class Usuario
 {
     private $nombre;
+    private $username;
     private $email;
     private $password;
     private $rol; // puede ser administrador o usuario comun
 
 
-    public function __construct($nombre, $email, $password, $rol)
+    public function __construct($nombre,$username, $email, $password, $rol)
     {
         $this->nombre = $nombre;
+        $this->username = $username;
         $this->email = $email;
         $this->password = $password;
         $this->rol = $rol;
@@ -19,6 +21,9 @@ class Usuario
     public function getNombre()
     {
         return $this->nombre;
+    }
+    public function getUsername(){
+        return $this->username;
     }
 
     public function getEmail()
@@ -40,6 +45,9 @@ class Usuario
     {
         $this->nombre = $nombre;
     }
+    public function setUsername($username): void{
+        $this->username = $username;
+    }
 
     public function setEmail($email): void
     {
@@ -56,6 +64,7 @@ class Usuario
         $this->rol = $rol;
     }
 
+
     // Funciones CRUD
     public function getUsuariosBD()
     {
@@ -66,7 +75,7 @@ class Usuario
         $usuarios = [];
         $contador = 0;
         while ($row = $result->fetch(PDO::FETCH_NUM)) {
-            $usuarios[$contador] = new Usuario($row[1], $row[2], $row[3], $row[4]);
+            $usuarios[$contador] = new Usuario($row[1], $row[2], $row[3], $row[4],$row[5]);
             $contador++;
         }
         return $usuarios;
