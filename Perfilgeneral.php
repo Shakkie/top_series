@@ -28,6 +28,5 @@ include_once 'includes/header.php';
     <p><span>Email: </span><?php echo htmlspecialchars($usuario->getEmail()); ?></p>
     <p><span>Rol: </span><?php echo htmlspecialchars($usuario->getRol()); ?></p>
 </div>
-
 <?php include_once 'includes/footer.php'; ?>
 

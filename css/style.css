@@ -1,0 +1,48 @@
+*{
+    margin: 0%;
+    
+}
+.contenedor{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+.formulario{
+    border: 2px;
+    padding: 20px;
+    background-color: coral;
+    border-radius: 2%;
+}
+.nav-link{
+    color: inherit;
+    font-weight: bold;
+}
+.nav-link:hover{
+        color: #007bff; 
+        text-decoration: underline; 
+    }
+.form-select{
+    width: 50% !important;
+}
+.formulario_select{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.estrellas {
+    font-size: 20px;
+    color: lightgray; 
+}
+
+.star {
+    cursor: pointer;
+    color: gold;
+}
+
+.star.filled {
+    color: gold; 
+}
+
+

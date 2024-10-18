@@ -59,7 +59,7 @@ class Serie
     }
 
     // Funciones grud de series
-    public function getSeriesBD()
+    public static function getSeriesBD()
     {
         $con = ConexionBD::getConnection();
         $sqlQuery = "select * from serie";
@@ -86,13 +86,77 @@ class Serie
         $insert->execute();
     }
 
+    // me tira como double y tiene que ser un int
     public function meanPuntuation()
     {
         $con = ConexionBD::getConnection();
         $sqlQuery = "select avg(Puntuacion) from puntuacion where ISAN = ?";
         $result = $con->prepare($sqlQuery);
         $result->bindValue(1, $this->getISAN());
-        $row = $result->fetch(PDO::FETCH_NUM);
-        return $row[0];
+        if($result->execute()){
+            $row=$result->fetch(PDO::FETCH_NUM);
+            if($row&&isset($row[0])){
+                return (int)$row[0];
+            }else{
+                return "No puntuada";
+            }
+        }
+        return false;
     }
+    public static function obtenerISANDeTitulo($titulo) {
+        $con = ConexionBD::getConnection();
+        $sqlQuery = "select ISAN from serie where Titulo = ?";
+        $stmt = $con->prepare($sqlQuery);
+        $stmt->bindValue(1, $titulo);
+        $stmt->execute();
+        $serie = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($serie) {
+            return $serie['ISAN'];
+        } else {
+            return null;
+        }
+    }
+
+    public static function getUserId($con, $email) {
+        $sqlUserId = "select ID from usuario where Email = ?";
+        $stmt = $con->prepare($sqlUserId);
+        $stmt->bindValue(1, $email);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            return $user['ID'];
+        } else {
+            return null;
+        }
+    }
+    public static function insertarPuntuacion($con, $isan, $userId, $puntuacion)
+    {
+        $sqlInsert = "insert into puntuacion (ISAN, ID, Puntuacion) values (?, ?, ?)";
+        $stmtInsert = $con->prepare($sqlInsert);
+        $stmtInsert->bindValue(1, $isan);
+        $stmtInsert->bindValue(2, $userId);
+        $stmtInsert->bindValue(3, $puntuacion);
+        return $stmtInsert->execute();
+    }
+    public static function existePuntuacion($con, $isan, $userId)
+    {
+        $sqlCheck = "select * from puntuacion where ISAN = ? and ID = ?";
+        $stmtCheck = $con->prepare($sqlCheck);
+        $stmtCheck->bindValue(1, $isan);
+        $stmtCheck->bindValue(2, $userId);
+        $stmtCheck->execute();
+        return $stmtCheck->rowCount() > 0; 
+    }
+
+    public static function updatePuntuacion($con, $puntuacion, $isan, $userId) {
+        $sqlUpdate = "update puntuacion set Puntuacion = ? where ISAN = ? and ID = ?";
+        $stmt = $con->prepare($sqlUpdate);
+        $stmt->bindValue(1, $puntuacion);
+        $stmt->bindValue(2, $isan);
+        $stmt->bindValue(3, $userId);
+        return $stmt->execute();
+    }
+    
 }

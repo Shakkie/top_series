@@ -1,4 +1,5 @@
 <?php
+// sino funciona la conexion poner include_once de conexion
 class Usuario
 {
     private $nombre;
