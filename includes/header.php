@@ -38,7 +38,7 @@
                     <a class="nav-link" href="PerfilGeneral.php">Mi perfil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="includes/logout.php">Salir</a>
+                    <a class="nav-link" href="/trabajodedos/includes/logout.php">Salir</a>
                 </li>
             </ul>
         </div>

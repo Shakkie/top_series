@@ -14,8 +14,7 @@ class Serie
         $this->descripcion = $descripcion;
         $this->anio_estreno = $anio_estreno;
     }
-    // comentario hacer funciones separadas del grud, se llama a la funcion y hace la insercion de datos
-    // la conexion es una clase estatica 
+
 
     //Getter and Setters
     public function getTitulo()
